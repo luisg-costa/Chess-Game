@@ -21,5 +21,10 @@ namespace GameBoard
             QtdMov = 0;
             Board = board;
         }
+
+        public void AddMovement()
+        {
+            QtdMov++;
+        }
     }
 }

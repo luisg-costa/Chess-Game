@@ -39,23 +39,32 @@ namespace GameBoard
             piece.Position = position;
         }
 
-        private bool TestPosition(Position pos)
+        public Piece RemovePiece(Position position)
         {
-            return Rank > pos.Rank && Column > pos.Column  ? true : false;
+            if (piece(position) == null) return null;
+            Piece tPiece = piece(position);
+            tPiece.Position = null;
+            pieces[position.Rank,position.Column] = null;
+            return tPiece;
         }
 
-        public void ValidPosition(Position pos)
+        private bool TestPosition(Position position)
         {
-            if (!TestPosition(pos))
+            return Rank > position.Rank && Column > position.Column  ? true : false;
+        }
+
+        public void ValidPosition(Position position)
+        {
+            if (!TestPosition(position))
             {
                 throw new PositionException("Invalid position");
             }
         }
 
-        public bool ExistsPiece(Position pos)
+        public bool ExistsPiece(Position position)
         {
-            ValidPosition(pos);
-            return piece(pos) != null;
+            ValidPosition(position);
+            return piece(position) != null;
         }
 
     }

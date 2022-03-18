@@ -6,7 +6,7 @@ using GameBoard.Enum;
 
 namespace ChessGame
 {
-    internal class BoardPrinter
+    class BoardPrinter
     {
         public static void PrintBoard(Board board)
         {
@@ -42,6 +42,14 @@ namespace ChessGame
                 Console.Write(piece + " ");
                 Console.ForegroundColor = temp;
             }
+        }
+
+        public static Position ReadPosition()
+        {
+            string positionReal = Console.ReadLine();
+            char column = positionReal[0];
+            int rank = int.Parse(positionReal[1] + "");
+            return Position.RealToMatrixPosition(column, rank);
         }
     }
 }

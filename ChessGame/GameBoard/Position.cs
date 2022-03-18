@@ -19,5 +19,10 @@ namespace GameBoard
         {
             return Rank + ", " + Column;
         }
+
+        public static Position RealToMatrixPosition(char column, int rank) 
+        {
+            return new Position(8 - rank, column - 'a'); 
+        }
     }
 }

@@ -2,6 +2,8 @@
 using GameBoard;
 using GameBoard.Enum;
 using ChessPieces;
+using Game;
+using GameBoard.Exceptions;
 
 namespace ChessGame
 {
@@ -9,13 +11,26 @@ namespace ChessGame
     {
         static void Main(string[] args)
         {
-            Board board = new Board(8, 8);
-            board.AddPiece(new King(Color.Black, board), new Position(0,1));
+            try
+            {
+                GameLogic game = new GameLogic();
+
+                while (!game.GameEnded)
+                {
+                    Console.Clear();
+                    BoardPrinter.PrintBoard(game.Board);
+                    Console.Write("Enter the starting position: ");
+                    Position origin = BoardPrinter.ReadPosition();
+                    Console.Write("Enter the final position: ");
+                    Position destination = BoardPrinter.ReadPosition();
+                    game.MakeMovement(origin, destination);
+                }
+
+            }
+            catch (PositionException e) {
+                Console.WriteLine(e.Message);
+            }
             
-            BoardPrinter.PrintBoard(board);
-
-
-            Console.WriteLine();
         } 
     }
 }
