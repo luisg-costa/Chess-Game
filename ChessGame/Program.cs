@@ -11,7 +11,8 @@ namespace ChessGame
         {
             Board board = new Board(8, 8);
             board.AddPiece(new King(Color.Black, board), new Position(0,1));
-
+            board.ValidPosition(new Position(9, 6));
+            
             BoardPrinter.PrintBoard(board);
 
 
