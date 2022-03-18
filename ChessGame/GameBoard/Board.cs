@@ -22,5 +22,11 @@ namespace GameBoard
         {
             return pieces[rank, column];
         }
+
+        public void AddPiece(Piece piece, Position position)
+        {
+            pieces[position.Rank,position.Column] = piece;
+            piece.Position = position;
+        }
     }
 }
