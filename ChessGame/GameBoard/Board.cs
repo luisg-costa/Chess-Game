@@ -17,5 +17,10 @@ namespace GameBoard
             Column = columns;
             pieces = new Piece[ranks, columns];
         }
+
+        public Piece piece(int rank, int column)
+        {
+            return pieces[rank, column];
+        }
     }
 }
