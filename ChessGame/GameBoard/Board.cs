@@ -29,14 +29,14 @@ namespace GameBoard
             return pieces[pos.Rank, pos.Column];
         }
 
-        public void AddPiece(Piece piece, Position position)
+        public void AddPiece(Piece pieceAdd, Position position)
         {
             if (ExistsPiece(position))
             {
                 throw new PositionException("Already have a piece in that position");
             }
-            pieces[position.Rank,position.Column] = piece;
-            piece.Position = position;
+            pieces[position.Rank,position.Column] = pieceAdd;
+            pieceAdd.Position = position;
         }
 
         public Piece RemovePiece(Position position)
@@ -48,9 +48,9 @@ namespace GameBoard
             return tPiece;
         }
 
-        private bool TestPosition(Position position)
+        public bool TestPosition(Position position)
         {
-            return Rank > position.Rank && Column > position.Column  ? true : false;
+            return position.Rank <0 || position.Rank >= Rank || position.Column < 0 || position.Column >= Column ? false : true;
         }
 
         public void ValidPosition(Position position)

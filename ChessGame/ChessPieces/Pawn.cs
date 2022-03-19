@@ -17,5 +17,7 @@ namespace ChessPieces
         {
             return "P";
         }
+
+        public override bool[,] PossibleMoves() { return null; }
     }
 }

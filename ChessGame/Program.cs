@@ -21,9 +21,14 @@ namespace ChessGame
                     BoardPrinter.PrintBoard(game.Board);
                     Console.Write("Enter the starting position: ");
                     Position origin = BoardPrinter.ReadPosition();
+                    bool[,] possibleMoves = game.Board.piece(origin).PossibleMoves();
+
+                    Console.Clear();
+                    BoardPrinter.PrintBoard(game.Board, possibleMoves);
                     Console.Write("Enter the final position: ");
                     Position destination = BoardPrinter.ReadPosition();
                     game.MakeMovement(origin, destination);
+                    
                 }
 
             }

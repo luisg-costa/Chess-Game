@@ -24,5 +24,7 @@ namespace GameBoard
         {
             return new Position(8 - rank, column - 'a'); 
         }
+
+        
     }
 }

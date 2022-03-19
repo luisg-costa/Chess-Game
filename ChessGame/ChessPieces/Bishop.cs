@@ -17,5 +17,14 @@ namespace ChessPieces
         {
             return "B";
         }
+
+
+        public override bool[,] PossibleMoves()
+        {
+            bool[,] possibleMoves = new bool[Board.Rank, Board.Column];
+            
+
+            return possibleMoves;
+        }
     }
 }
