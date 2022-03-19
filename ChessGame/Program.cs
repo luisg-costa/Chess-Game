@@ -1,6 +1,7 @@
 ﻿using System;
 using GameBoard;
 using GameBoard.Enum;
+using System.Collections.Generic;
 using ChessPieces;
 using Game;
 using GameBoard.Exceptions;
@@ -23,7 +24,6 @@ namespace ChessGame
                         BoardPrinter.PrintBoard(game.Board);
                         Console.WriteLine("Turn: " + game.Turn);
                         Console.WriteLine($"Waiting for {game.CurrentPlayer.ToString().ToUpper()} to play");
-
                         Console.Write("Enter the starting position: ");
                         Position origin = BoardPrinter.ReadPosition();
                         game.validateOriginPosition(origin);
