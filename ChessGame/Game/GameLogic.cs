@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GameBoard;
 using GameBoard.Enum;
+using GameBoard.Exceptions;
 using ChessPieces;
 
 namespace Game
@@ -11,11 +12,11 @@ namespace Game
     {
         public Board Board { get; private set; }
         public bool GameEnded  { get; set; }
-        private int Turn;
-        private Color CurrentPlayer;
+        public int Turn { get; private set; }
+        public Color CurrentPlayer { get; private set; }
 
 
-        public GameLogic()
+    public GameLogic()
         {
             Board = new Board(8, 8);
             Turn = 1;
@@ -24,12 +25,56 @@ namespace Game
             PutPiecesInPlace();
         }
 
+        public void ChangePlayer()
+        {
+            if(CurrentPlayer == Color.White)
+            {
+                CurrentPlayer = Color.Black;
+            }
+            else
+            {
+                CurrentPlayer = Color.White;
+            }
+        }
+
         public void MakeMovement(Position origin, Position destination)
         {
             Piece inPositionPiece = Board.RemovePiece(origin);
             inPositionPiece.AddMovement();
             Piece capturedPiece = Board.RemovePiece(destination);
             Board.AddPiece(inPositionPiece, destination);
+        }
+
+        public void Move(Position origin, Position destination)
+        {
+            MakeMovement(origin, destination);
+            Turn++;
+            ChangePlayer();
+        }
+
+        public void validateOriginPosition(Position origin)
+        {
+            if(Board.piece(origin) == null)
+            {
+                throw new PositionException("There is no piece in that position.");
+            }
+            if (!Board.piece(origin).canMovePiece())
+            {
+                throw new PositionException("There are no possible moves for this piece.");
+            }
+            if(CurrentPlayer != Board.piece(origin).Color)
+            {
+                throw new PieceException("You can't move pieces that are not yours.");
+            }
+
+        }
+
+        public void validateDestinationPosition(bool[,] possibleMoves, Position destination)
+        {
+            if(!possibleMoves[destination.Rank,destination.Column])
+            {
+                throw new PositionException("That move is not valid.");
+            }
         }
 
         private void PutPiecesInPlace()

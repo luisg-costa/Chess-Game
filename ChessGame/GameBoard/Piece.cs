@@ -27,6 +27,22 @@ namespace GameBoard
             QtdMov++;
         }
 
+        public bool canMovePiece()
+        {
+            bool[,] temp = PossibleMoves();
+            for(int i = 0; i < temp.GetLength(0); i++)
+            {
+                for(int j = 0; j < temp.GetLength(1); j++)
+                {
+                    if(temp[i,j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public abstract bool[,] PossibleMoves();
 
 
