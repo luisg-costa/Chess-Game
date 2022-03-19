@@ -3,11 +3,38 @@ using System.Collections.Generic;
 using System.Text;
 using GameBoard;
 using GameBoard.Enum;
+using Game;
 
 namespace ChessGame
 {
     class BoardPrinter
     {
+        public static void PrintGame(GameLogic game)
+        {
+            PrintBoard(game.Board);
+            Console.WriteLine();
+            Console.WriteLine("Captured Pieces:");
+            Console.Write("White: ");
+            PrintOffPieceSet(game.OffGamePiecesByColor(Color.White));
+            Console.Write("Black: ");
+            PrintOffPieceSet(game.OffGamePiecesByColor(Color.Black));
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + game.Turn);
+            Console.WriteLine($"Waiting for {game.CurrentPlayer.ToString().ToUpper()} to play");
+
+        }
+
+        private static void PrintOffPieceSet(HashSet<Piece> p)
+        {
+            Console.Write(" [ ");
+            foreach (Piece piece in p)
+            {
+                Console.Write(piece.ToString() + " ");
+            }
+            Console.WriteLine("] ");
+        }
+
+
         public static void PrintBoard(Board board)
         {
             for (int i = 0; i < board.Rank; i++)

@@ -21,9 +21,7 @@ namespace ChessGame
                     try
                     {
                         Console.Clear();
-                        BoardPrinter.PrintBoard(game.Board);
-                        Console.WriteLine("Turn: " + game.Turn);
-                        Console.WriteLine($"Waiting for {game.CurrentPlayer.ToString().ToUpper()} to play");
+                        BoardPrinter.PrintGame(game);
                         Console.Write("Enter the starting position: ");
                         Position origin = BoardPrinter.ReadPosition();
                         game.validateOriginPosition(origin);
