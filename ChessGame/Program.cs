@@ -51,6 +51,8 @@ namespace ChessGame
                         Console.ReadLine();
                     }
                 }
+                Console.Clear();
+                BoardPrinter.PrintGame(game);
 
             }
             catch (PositionException e)

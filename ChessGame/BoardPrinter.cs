@@ -20,7 +20,14 @@ namespace ChessGame
             PrintOffPieceSet(game.OffGamePiecesByColor(Color.Black));
             Console.WriteLine();
             Console.WriteLine("Turn: " + game.Turn);
+            if (!game.GameEnded) { 
             Console.WriteLine($"Waiting for {game.CurrentPlayer.ToString().ToUpper()} to play");
+            }
+            else
+            {
+                Console.WriteLine("CHECK-MATE!");
+                Console.WriteLine("Winner: " + game.CurrentPlayer);
+            }
 
         }
 

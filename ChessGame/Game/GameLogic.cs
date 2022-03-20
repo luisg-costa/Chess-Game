@@ -73,6 +73,11 @@ namespace Game
         {
             bool[,] temp;
             Piece k = GetKing(color);
+            if (k == null)
+            {
+                destination = null;
+            }
+            Console.WriteLine("DESTINATION" + destination);
             foreach (Piece piece in OnGamePieces)
             {
                 if (piece.Color == OpponentColor(color))
@@ -136,23 +141,60 @@ namespace Game
 
         }
 
+        public bool TestCheckMate(Color color, Position destination)
+        {
+            bool[,] temp;
+            if (!CheckTest(color, destination))
+            {
+                return false;
+            }
+            foreach (Piece p in OnGamePieces)
+            {
+                if (p.Color == color)
+                {
+                    temp = p.PossibleMoves();
+                    for (int i = 0; i < Board.Rank; i++)
+                    {
+                        for (int j = 0; j < Board.Column; j++)
+                        {
+                            if (temp[i, j])
+                            {
+                                if (!WillMakeCheckWithMove(p.Position, new Position(i, j)))
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public void MakeMovement(Position origin, Position destination)
         {
-            if (!WillMakeCheckWithMove(origin, destination))
+            if (!TestCheckMate(CurrentPlayer, destination))
             {
-                Piece inPositionPiece = Board.RemovePiece(origin);
-                inPositionPiece.AddMovement();
-                Piece capturedPiece = Board.RemovePiece(destination);
-                if (capturedPiece != null)
+                if (!WillMakeCheckWithMove(origin, destination))
                 {
-                    OffGamePieces.Add(capturedPiece);
-                    OnGamePieces.Remove(capturedPiece);
+                    Piece inPositionPiece = Board.RemovePiece(origin);
+                    inPositionPiece.AddMovement();
+                    Piece capturedPiece = Board.RemovePiece(destination);
+                    if (capturedPiece != null)
+                    {
+                        OffGamePieces.Add(capturedPiece);
+                        OnGamePieces.Remove(capturedPiece);
+                    }
+                    Board.AddPiece(inPositionPiece, destination);
                 }
-                Board.AddPiece(inPositionPiece, destination);
+                else
+                {
+                    throw new PositionException("You can't make that move. You would be in check");
+                }
             }
             else
             {
-                throw new PositionException("You can't make that move. You would be in check");
+                GameEnded = true;
             }
         }
 
