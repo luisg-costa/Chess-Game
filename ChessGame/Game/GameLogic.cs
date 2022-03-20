@@ -11,7 +11,7 @@ namespace Game
     internal class GameLogic
     {
         public Board Board { get; private set; }
-        public bool GameEnded  { get; set; }
+        public bool GameEnded { get; set; }
         public int Turn { get; private set; }
         public Color CurrentPlayer { get; private set; }
 
@@ -19,7 +19,7 @@ namespace Game
 
         private HashSet<Piece> OffGamePieces;
 
-    public GameLogic()
+        public GameLogic()
         {
             Board = new Board(8, 8);
             Turn = 1;
@@ -30,9 +30,9 @@ namespace Game
             PutPiecesInPlace();
         }
 
-        public void ChangePlayer()
+        private void ChangePlayer()
         {
-            if(CurrentPlayer == Color.White)
+            if (CurrentPlayer == Color.White)
             {
                 CurrentPlayer = Color.Black;
             }
@@ -42,42 +42,118 @@ namespace Game
             }
         }
 
+        private Color OpponentColor(Color color)
+        {
+            if (color == Color.White)
+            {
+                return Color.Black;
+            }
+            else
+            {
+                return Color.White;
+            }
+        }
+
+        private Piece GetKing(Color color)
+        {
+            foreach (Piece x in OnGamePieces)
+            {
+                if (x.Color == color)
+                {
+                    if (x is King)
+                    {
+                        return x;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public bool CheckTest(Color color, Position destination)
+        {
+            bool[,] temp;
+            Piece k = GetKing(color);
+            foreach (Piece piece in OnGamePieces)
+            {
+                if (piece.Color == OpponentColor(color))
+                {
+                    temp = piece.PossibleMoves();
+
+                    if (destination == null)
+                    {
+                        if (temp[k.Position.Rank, k.Position.Column])
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        if (temp[destination.Rank, destination.Column])
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
         public HashSet<Piece> OffGamePiecesByColor(Color color)
         {
             HashSet<Piece> p = new HashSet<Piece>();
-            foreach(Piece capturedP in OffGamePieces)
+            foreach (Piece capturedP in OffGamePieces)
             {
-                if(capturedP.Color == color)
+                if (capturedP.Color == color)
                 {
                     p.Add(capturedP);
-                }   
-            }
-            return p;
-        }
-        public HashSet<Piece> OnGamePiecesByColor(Color color)
-        {
-            HashSet<Piece> p = new HashSet<Piece>();
-            foreach (Piece piece in OnGamePieces)
-            {
-                if (piece.Color == color)
-                {
-                    p.Add(piece);
                 }
             }
             return p;
         }
 
+        public bool WillMakeCheckWithMove(Position origin, Position destination)
+        {
+            Piece p = Board.RemovePiece(origin);
+            if (!(p is King))
+            {
+                if (CheckTest(CurrentPlayer, null))
+                {
+                    Board.AddPiece(p, origin);
+                    return true;
+                }
+            }
+            else
+            {
+                if (CheckTest(CurrentPlayer, destination))
+                {
+                    Board.AddPiece(p, origin);
+                    return true;
+                }
+            }
+
+            Board.AddPiece(p, origin);
+            return false;
+
+        }
+
         public void MakeMovement(Position origin, Position destination)
         {
-            Piece inPositionPiece = Board.RemovePiece(origin);
-            inPositionPiece.AddMovement();
-            Piece capturedPiece = Board.RemovePiece(destination);
-            if(capturedPiece != null)
+            if (!WillMakeCheckWithMove(origin, destination))
             {
-                OffGamePieces.Add(capturedPiece);
-                OnGamePieces.Remove(capturedPiece);
+                Piece inPositionPiece = Board.RemovePiece(origin);
+                inPositionPiece.AddMovement();
+                Piece capturedPiece = Board.RemovePiece(destination);
+                if (capturedPiece != null)
+                {
+                    OffGamePieces.Add(capturedPiece);
+                    OnGamePieces.Remove(capturedPiece);
+                }
+                Board.AddPiece(inPositionPiece, destination);
             }
-            Board.AddPiece(inPositionPiece, destination);
+            else
+            {
+                throw new PositionException("You can't make that move. You would be in check");
+            }
         }
 
         public void Move(Position origin, Position destination)
@@ -89,7 +165,7 @@ namespace Game
 
         public void validateOriginPosition(Position origin)
         {
-            if(Board.piece(origin) == null)
+            if (Board.piece(origin) == null)
             {
                 throw new PositionException("There is no piece in that position.");
             }
@@ -97,7 +173,7 @@ namespace Game
             {
                 throw new PositionException("There are no possible moves for this piece.");
             }
-            if(CurrentPlayer != Board.piece(origin).Color)
+            if (CurrentPlayer != Board.piece(origin).Color)
             {
                 throw new PieceException("You can't move pieces that are not yours.");
             }
@@ -106,7 +182,7 @@ namespace Game
 
         public void validateDestinationPosition(bool[,] possibleMoves, Position destination)
         {
-            if(!possibleMoves[destination.Rank,destination.Column])
+            if (!possibleMoves[destination.Rank, destination.Column])
             {
                 throw new PositionException("That move is not valid.");
             }
@@ -121,7 +197,7 @@ namespace Game
         private void PutPiecesInPlace()
         {
             //WHITE PIECES
-            insertPiece(new Rook(Color.White, Board), 'a',1);
+            insertPiece(new Rook(Color.White, Board), 'a', 1);
             insertPiece(new Rook(Color.White, Board), 'h', 1);
             /*
             Board.AddPiece(new Knight(Color.White, Board), Position.RealToMatrixPosition('b', 1));
