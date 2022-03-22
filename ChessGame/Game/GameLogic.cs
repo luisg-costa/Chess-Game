@@ -245,10 +245,9 @@ namespace Game
             insertPiece(new Bishop(Color.White, Board), 'c', 1);
             insertPiece(new Bishop(Color.White, Board), 'f', 1);
             insertPiece(new King(Color.White, Board), 'd', 1);
-
+            insertPiece(new Knight(Color.White, Board), 'b', 1);
+            insertPiece(new Knight(Color.White, Board), 'g', 1);
             /*
-            Board.AddPiece(new Knight(Color.White, Board), Position.RealToMatrixPosition('b', 1));
-            Board.AddPiece(new Knight(Color.White, Board), Position.RealToMatrixPosition('g', 1));
             Board.AddPiece(new Queen(Color.White, Board), Position.RealToMatrixPosition('e', 1));
             Board.AddPiece(new Pawn(Color.White, Board), Position.RealToMatrixPosition('a', 2));
             Board.AddPiece(new Pawn(Color.White, Board), Position.RealToMatrixPosition('b', 2));
@@ -267,10 +266,10 @@ namespace Game
             insertPiece(new Bishop(Color.Black, Board), 'c', 8);
             insertPiece(new Bishop(Color.Black, Board), 'f', 8);
             insertPiece(new King(Color.Black, Board), 'd', 8);
+            insertPiece(new Knight(Color.Black, Board), 'b', 8);
+            insertPiece(new Knight(Color.Black, Board), 'g', 8);
 
             /*
-            Board.AddPiece(new Knight(Color.Black, Board), Position.RealToMatrixPosition('b', 8));
-            Board.AddPiece(new Knight(Color.Black, Board), Position.RealToMatrixPosition('g', 8));
             Board.AddPiece(new Queen(Color.Black, Board), Position.RealToMatrixPosition('e', 8));
             Board.AddPiece(new Pawn(Color.Black, Board), Position.RealToMatrixPosition('a', 7));
             Board.AddPiece(new Pawn(Color.Black, Board), Position.RealToMatrixPosition('b', 7));
