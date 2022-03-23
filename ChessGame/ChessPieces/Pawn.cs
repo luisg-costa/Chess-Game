@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using GameBoard;
 using GameBoard.Enum;
+using Game;
 
 namespace ChessPieces
 {
     internal class Pawn : Piece
     {
-        public Pawn(Color color, Board board) : base(color, board)
+        private GameLogic game;
+        public Pawn(Color color, Board board, GameLogic game) : base(color, board)
         {
-
+            this.game = game;
         }
 
         public override string ToString()
@@ -99,6 +101,22 @@ namespace ChessPieces
                 {
                     possiblePositions[tester.Rank, tester.Column] = true;
                 }
+
+                //En passant
+                if(Position.Rank == 3)
+                {
+                    Position left = new Position(Position.Rank, Position.Column - 1);
+                    if(Board.TestPosition(left) && oppositePiece(left) && Board.piece(left) == game.CanSufferEnPassant)
+                    {
+                        possiblePositions[Position.Rank - 1, Position.Column - 1] = true;
+                    }
+                    Position right = new Position(Position.Rank, Position.Column + 1);
+                    if (Board.TestPosition(right) && oppositePiece(right) && Board.piece(right) == game.CanSufferEnPassant)
+                    {
+                        possiblePositions[Position.Rank - 1, Position.Column + 1] = true;
+                    }
+                }
+
             } else
             {
                 tester = PossiblePositionBlack("up");
@@ -123,6 +141,21 @@ namespace ChessPieces
                 if (Board.TestPosition(tester) && oppositePiece(tester))
                 {
                     possiblePositions[tester.Rank, tester.Column] = true;
+                }
+
+                //En passant
+                if (Position.Rank == 4)
+                {
+                    Position left = new Position(Position.Rank, Position.Column - 1);
+                    if (Board.TestPosition(left) && oppositePiece(left) && Board.piece(left) == game.CanSufferEnPassant)
+                    {
+                        possiblePositions[Position.Rank + 1, Position.Column - 1] = true;
+                    }
+                    Position right = new Position(Position.Rank, Position.Column + 1);
+                    if (Board.TestPosition(right) && oppositePiece(right) && Board.piece(right) == game.CanSufferEnPassant)
+                    {
+                        possiblePositions[Position.Rank + 1, Position.Column + 1] = true;
+                    }
                 }
             }
 

@@ -17,6 +17,8 @@ namespace Game
         public int Turn { get; private set; }
         public Color CurrentPlayer { get; private set; }
 
+        public Piece CanSufferEnPassant { get; private set; }
+
         private HashSet<Piece> OnGamePieces;
 
         private HashSet<Piece> OffGamePieces;
@@ -28,6 +30,7 @@ namespace Game
             CurrentPlayer = Color.White;
             GameEnded = false;
             Check = false;
+            CanSufferEnPassant = null;
             OnGamePieces = new HashSet<Piece>();
             OffGamePieces = new HashSet<Piece>();
             PutPiecesInPlace();
@@ -211,6 +214,32 @@ namespace Game
                         r.AddMovement();
                         Board.AddPiece(r, rookPositionF);
                     }
+
+                    //En Passant
+                    if (inPositionPiece is Pawn && (destination.Rank == origin.Rank - 2 || destination.Rank == origin.Rank + 2))
+                    {
+                        CanSufferEnPassant = inPositionPiece;
+                    } else
+                    {
+                        CanSufferEnPassant = null;
+                    }
+                    
+                    if (inPositionPiece is Pawn && origin.Column != destination.Column && capturedPiece == null)
+                    {
+                        Position pos;
+                        Piece removed;
+                       if(inPositionPiece.Color == Color.White)
+                        {
+                            pos = new Position(destination.Rank + 1, destination.Column);
+                        } else
+                        {
+                            pos = new Position(destination.Rank - 1, destination.Column);
+                        }
+                        removed = Board.RemovePiece(pos);
+                        OffGamePieces.Add(removed);
+                        OnGamePieces.Remove(removed);
+                    }
+
                 }
                 else
                 {
@@ -274,14 +303,14 @@ namespace Game
             insertPiece(new Knight(Color.White, Board), 'b', 1);
             insertPiece(new Knight(Color.White, Board), 'g', 1);
             insertPiece(new Queen(Color.White, Board), 'd', 1);
-            insertPiece(new Pawn(Color.White, Board), 'a', 2);
-            insertPiece(new Pawn(Color.White, Board), 'b', 2);
-            insertPiece(new Pawn(Color.White, Board), 'c', 2);
-            insertPiece(new Pawn(Color.White, Board), 'd', 2);
-            insertPiece(new Pawn(Color.White, Board), 'e', 2);
-            insertPiece(new Pawn(Color.White, Board), 'f', 2);
-            insertPiece(new Pawn(Color.White, Board), 'g', 2);
-            insertPiece(new Pawn(Color.White, Board), 'h', 2);
+            insertPiece(new Pawn(Color.White, Board, this), 'a', 2);
+            insertPiece(new Pawn(Color.White, Board, this), 'b', 2);
+            insertPiece(new Pawn(Color.White, Board, this), 'c', 2);
+            insertPiece(new Pawn(Color.White, Board, this), 'd', 2);
+            insertPiece(new Pawn(Color.White, Board, this), 'e', 2);
+            insertPiece(new Pawn(Color.White, Board, this), 'f', 2);
+            insertPiece(new Pawn(Color.White, Board, this), 'g', 2);
+            insertPiece(new Pawn(Color.White, Board, this), 'h', 2);
 
             //BLACK PIECES
 
@@ -293,14 +322,14 @@ namespace Game
             insertPiece(new Knight(Color.Black, Board), 'b', 8);
             insertPiece(new Knight(Color.Black, Board), 'g', 8);
             insertPiece(new Queen(Color.Black, Board), 'd', 8);
-            insertPiece(new Pawn(Color.Black, Board), 'a', 7);
-            insertPiece(new Pawn(Color.Black, Board), 'b', 7);
-            insertPiece(new Pawn(Color.Black, Board), 'c', 7);
-            insertPiece(new Pawn(Color.Black, Board), 'd', 7);
-            insertPiece(new Pawn(Color.Black, Board), 'e', 7);
-            insertPiece(new Pawn(Color.Black, Board), 'f', 7);
-            insertPiece(new Pawn(Color.Black, Board), 'g', 7);
-            insertPiece(new Pawn(Color.Black, Board), 'h', 7);
+            insertPiece(new Pawn(Color.Black, Board, this), 'a', 7);
+            insertPiece(new Pawn(Color.Black, Board, this), 'b', 7);
+            insertPiece(new Pawn(Color.Black, Board, this), 'c', 7);
+            insertPiece(new Pawn(Color.Black, Board, this), 'd', 7);
+            insertPiece(new Pawn(Color.Black, Board, this), 'e', 7);
+            insertPiece(new Pawn(Color.Black, Board, this), 'f', 7);
+            insertPiece(new Pawn(Color.Black, Board, this), 'g', 7);
+            insertPiece(new Pawn(Color.Black, Board, this), 'h', 7);
         }
     }
 }

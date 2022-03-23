@@ -20,13 +20,14 @@ namespace ChessGame
                 {
                     try
                     {
-                        Console.Clear();
+                        //Console.Clear();
                         BoardPrinter.PrintGame(game);
+                        Console.WriteLine("EnPassant" + game.CanSufferEnPassant);
                         Console.Write("Enter the starting position: ");
                         Position origin = BoardPrinter.ReadPosition();
                         game.validateOriginPosition(origin);
                         bool[,] possibleMoves = game.Board.piece(origin).PossibleMoves();
-                        Console.Clear();
+                        //Console.Clear();
                         BoardPrinter.PrintBoard(game.Board, possibleMoves);
 
                         Console.Write("Enter the final position: ");
