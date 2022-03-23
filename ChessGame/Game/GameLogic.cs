@@ -240,6 +240,21 @@ namespace Game
                         OnGamePieces.Remove(removed);
                     }
 
+                    //Promotion
+                    if(inPositionPiece is Pawn)
+                    {
+                        if ((inPositionPiece.Color == Color.White && destination.Rank == 0) || (inPositionPiece.Color == Color.Black && destination.Rank == 7))
+                        {
+                            inPositionPiece = Board.RemovePiece(destination);
+                            OffGamePieces.Add(inPositionPiece);
+                            OnGamePieces.Remove(inPositionPiece);
+                            Queen q = new Queen(inPositionPiece.Color, Board);
+                            Board.AddPiece(q, destination);
+                            OnGamePieces.Add(q);
+                        }
+                    }
+
+
                 }
                 else
                 {

@@ -132,7 +132,6 @@ namespace ChessPieces
             if (!game.Check && QtdMov == 0)
             {
                 //Castle Kingside
-                Console.WriteLine("Positionking: " + Position.Rank + " " + Position.Column );
                 if (PossibleCastleKingside(Position))
                 {
                     possiblePositions[Position.Rank, Position.Column + 2] = true;
