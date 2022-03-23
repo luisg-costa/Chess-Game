@@ -248,17 +248,14 @@ namespace Game
             insertPiece(new Knight(Color.White, Board), 'b', 1);
             insertPiece(new Knight(Color.White, Board), 'g', 1);
             insertPiece(new Queen(Color.White, Board), 'e', 1);
-           
-            /*
-            Board.AddPiece(new Pawn(Color.White, Board), Position.RealToMatrixPosition('a', 2));
-            Board.AddPiece(new Pawn(Color.White, Board), Position.RealToMatrixPosition('b', 2));
-            Board.AddPiece(new Pawn(Color.White, Board), Position.RealToMatrixPosition('c', 2));
-            Board.AddPiece(new Pawn(Color.White, Board), Position.RealToMatrixPosition('d', 2));
-            Board.AddPiece(new Pawn(Color.White, Board), Position.RealToMatrixPosition('e', 2));
-            Board.AddPiece(new Pawn(Color.White, Board), Position.RealToMatrixPosition('f', 2));
-            Board.AddPiece(new Pawn(Color.White, Board), Position.RealToMatrixPosition('g', 2));
-            Board.AddPiece(new Pawn(Color.White, Board), Position.RealToMatrixPosition('h', 2));
-            */
+            insertPiece(new Pawn(Color.White, Board), 'a', 2);
+            insertPiece(new Pawn(Color.White, Board), 'b', 2);
+            insertPiece(new Pawn(Color.White, Board), 'c', 2);
+            insertPiece(new Pawn(Color.White, Board), 'd', 2);
+            insertPiece(new Pawn(Color.White, Board), 'e', 2);
+            insertPiece(new Pawn(Color.White, Board), 'f', 2);
+            insertPiece(new Pawn(Color.White, Board), 'g', 2);
+            insertPiece(new Pawn(Color.White, Board), 'h', 2);
 
             //BLACK PIECES
 
@@ -270,17 +267,14 @@ namespace Game
             insertPiece(new Knight(Color.Black, Board), 'b', 8);
             insertPiece(new Knight(Color.Black, Board), 'g', 8);
             insertPiece(new Queen(Color.Black, Board), 'e', 8);
-
-            /*
-            Board.AddPiece(new Pawn(Color.Black, Board), Position.RealToMatrixPosition('a', 7));
-            Board.AddPiece(new Pawn(Color.Black, Board), Position.RealToMatrixPosition('b', 7));
-            Board.AddPiece(new Pawn(Color.Black, Board), Position.RealToMatrixPosition('c', 7));
-            Board.AddPiece(new Pawn(Color.Black, Board), Position.RealToMatrixPosition('d', 7));
-            Board.AddPiece(new Pawn(Color.Black, Board), Position.RealToMatrixPosition('e', 7));
-            Board.AddPiece(new Pawn(Color.Black, Board), Position.RealToMatrixPosition('f', 7));
-            Board.AddPiece(new Pawn(Color.Black, Board), Position.RealToMatrixPosition('g', 7));
-            Board.AddPiece(new Pawn(Color.Black, Board), Position.RealToMatrixPosition('h', 7));
-            */
+            insertPiece(new Pawn(Color.Black, Board), 'a', 7);
+            insertPiece(new Pawn(Color.Black, Board), 'b', 7);
+            insertPiece(new Pawn(Color.Black, Board), 'c', 7);
+            insertPiece(new Pawn(Color.Black, Board), 'd', 7);
+            insertPiece(new Pawn(Color.Black, Board), 'e', 7);
+            insertPiece(new Pawn(Color.Black, Board), 'f', 7);
+            insertPiece(new Pawn(Color.Black, Board), 'g', 7);
+            insertPiece(new Pawn(Color.Black, Board), 'h', 7);
         }
     }
 }
