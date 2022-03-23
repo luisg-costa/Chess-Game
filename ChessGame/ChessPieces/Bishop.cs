@@ -58,7 +58,6 @@ namespace ChessPieces
                 tester.Column++;
             }
 
-            //down
             tester = PossiblePosition("up-left");
             while (Board.TestPosition(tester) && canMove(tester))
             {
@@ -71,7 +70,6 @@ namespace ChessPieces
                 tester.Column--;
             }
 
-            //left
             tester = PossiblePosition("down-right");
             while (Board.TestPosition(tester) && canMove(tester))
             {
@@ -84,7 +82,6 @@ namespace ChessPieces
                 tester.Column++;
             }
 
-            //rigth
             tester = PossiblePosition("down-left");
             while (Board.TestPosition(tester) && canMove(tester))
             {

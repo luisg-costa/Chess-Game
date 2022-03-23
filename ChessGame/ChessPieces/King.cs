@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using GameBoard;
 using GameBoard.Enum;
+using Game;
 
 namespace ChessPieces
 {
     internal class King : Piece
     {
-        public King(Color color, Board board) : base(color, board)
+        private GameLogic game;
+        public King(Color color, Board board, GameLogic game) : base(color, board)
         {
-
+            this.game = game;
         }
 
         public override string ToString()
@@ -42,11 +44,32 @@ namespace ChessPieces
                     return null;
             }
         }
-        
+
         private bool canMove(Position position)
         {
             Piece p = Board.piece(position);
             return p == null || p.Color != Color;
+        }
+
+        private bool existsPiece(Position position)
+        {
+            Piece p = Board.piece(position);
+            return p == null;
+        }
+
+        private bool PossibleCastleKingside(Position position)
+        {
+            Piece rook = Board.piece(position.Rank, position.Column + 3);
+            return rook != null && rook is Rook && rook.Color == Color && rook.QtdMov == 0
+                && Board.piece(rook.Position.Rank, rook.Position.Column - 1) == null && Board.piece(rook.Position.Rank, rook.Position.Column - 2) == null;
+        }
+
+        private bool PossibleCastleQueenside(Position position)
+        {
+            Piece rook = Board.piece(position.Rank, position.Column - 4);
+            return rook != null && rook is Rook && rook.Color == Color && rook.QtdMov == 0
+                && Board.piece(rook.Position.Rank, rook.Position.Column + 1) == null && Board.piece(rook.Position.Rank, rook.Position.Column + 2) == null
+                && Board.piece(rook.Position.Rank, rook.Position.Column + 3) == null;
         }
 
         public override bool[,] PossibleMoves()
@@ -104,6 +127,22 @@ namespace ChessPieces
             if (Board.TestPosition(tester) && canMove(tester))
             {
                 possiblePositions[tester.Rank, tester.Column] = true;
+            }
+
+            if (!game.Check && QtdMov == 0)
+            {
+                //Castle Kingside
+                Console.WriteLine("Positionking: " + Position.Rank + " " + Position.Column );
+                if (PossibleCastleKingside(Position))
+                {
+                    possiblePositions[Position.Rank, Position.Column + 2] = true;
+                }
+
+                //Castle Queenside
+                if (PossibleCastleQueenside(Position))
+                {
+                    possiblePositions[Position.Rank, Position.Column - 2] = true;
+                }
             }
 
             return possiblePositions;

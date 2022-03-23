@@ -11,6 +11,8 @@ namespace Game
     internal class GameLogic
     {
         public Board Board { get; private set; }
+
+        public bool Check { get; private set; }
         public bool GameEnded { get; set; }
         public int Turn { get; private set; }
         public Color CurrentPlayer { get; private set; }
@@ -25,6 +27,7 @@ namespace Game
             Turn = 1;
             CurrentPlayer = Color.White;
             GameEnded = false;
+            Check = false;
             OnGamePieces = new HashSet<Piece>();
             OffGamePieces = new HashSet<Piece>();
             PutPiecesInPlace();
@@ -77,17 +80,16 @@ namespace Game
             {
                 destination = null;
             }
-            Console.WriteLine("DESTINATION" + destination);
             foreach (Piece piece in OnGamePieces)
             {
                 if (piece.Color == OpponentColor(color))
                 {
                     temp = piece.PossibleMoves();
-
                     if (destination == null)
                     {
                         if (temp[k.Position.Rank, k.Position.Column])
                         {
+                            Check = true;
                             return true;
                         }
                     }
@@ -95,11 +97,13 @@ namespace Game
                     {
                         if (temp[destination.Rank, destination.Column])
                         {
+                            Check = true;
                             return true;
                         }
                     }
                 }
             }
+            Check = false;
             return false;
         }
 
@@ -115,6 +119,7 @@ namespace Game
             }
             return p;
         }
+
 
         public bool WillMakeCheckWithMove(Position origin, Position destination)
         {
@@ -186,9 +191,30 @@ namespace Game
                         OnGamePieces.Remove(capturedPiece);
                     }
                     Board.AddPiece(inPositionPiece, destination);
+
+                    //Castle Kingside
+                    if (inPositionPiece is King && destination.Column == origin.Column + 2)
+                    {
+                        Position rookPositionI = new Position(origin.Rank, origin.Column + 3);
+                        Position rookPositionF = new Position(origin.Rank, origin.Column + 1);
+                        Piece r = Board.RemovePiece(rookPositionI);
+                        r.AddMovement();
+                        Board.AddPiece(r, rookPositionF);
+                    }
+
+                    //Castle Queenside
+                    if (inPositionPiece is King && destination.Column == origin.Column - 2)
+                    {
+                        Position rookPositionI = new Position(origin.Rank, origin.Column - 4);
+                        Position rookPositionF = new Position(origin.Rank, origin.Column - 1);
+                        Piece r = Board.RemovePiece(rookPositionI);
+                        r.AddMovement();
+                        Board.AddPiece(r, rookPositionF);
+                    }
                 }
                 else
                 {
+                    Check = false;
                     throw new PositionException("You can't make that move. You would be in check");
                 }
             }
@@ -244,10 +270,10 @@ namespace Game
             insertPiece(new Rook(Color.White, Board), 'h', 1);
             insertPiece(new Bishop(Color.White, Board), 'c', 1);
             insertPiece(new Bishop(Color.White, Board), 'f', 1);
-            insertPiece(new King(Color.White, Board), 'd', 1);
+            insertPiece(new King(Color.White, Board, this), 'e', 1);
             insertPiece(new Knight(Color.White, Board), 'b', 1);
             insertPiece(new Knight(Color.White, Board), 'g', 1);
-            insertPiece(new Queen(Color.White, Board), 'e', 1);
+            insertPiece(new Queen(Color.White, Board), 'd', 1);
             insertPiece(new Pawn(Color.White, Board), 'a', 2);
             insertPiece(new Pawn(Color.White, Board), 'b', 2);
             insertPiece(new Pawn(Color.White, Board), 'c', 2);
@@ -263,10 +289,10 @@ namespace Game
             insertPiece(new Rook(Color.Black, Board), 'h', 8);
             insertPiece(new Bishop(Color.Black, Board), 'c', 8);
             insertPiece(new Bishop(Color.Black, Board), 'f', 8);
-            insertPiece(new King(Color.Black, Board), 'd', 8);
+            insertPiece(new King(Color.Black, Board, this), 'e', 8);
             insertPiece(new Knight(Color.Black, Board), 'b', 8);
             insertPiece(new Knight(Color.Black, Board), 'g', 8);
-            insertPiece(new Queen(Color.Black, Board), 'e', 8);
+            insertPiece(new Queen(Color.Black, Board), 'd', 8);
             insertPiece(new Pawn(Color.Black, Board), 'a', 7);
             insertPiece(new Pawn(Color.Black, Board), 'b', 7);
             insertPiece(new Pawn(Color.Black, Board), 'c', 7);
